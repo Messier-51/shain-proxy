@@ -1,0 +1,12 @@
+## NPM ##
+npm
+npm-debug.log
+node_modules
+node_module/
+
+pids
+*.pid
+*.log
+
+## MAC files ##
+.DS_Store
