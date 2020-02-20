@@ -1,4 +1,270 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sound Cloud Proxy</title>
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"> -->
+  <link rel="stylesheet" href="https://rpt-soundcloud.s3-us-west-2.amazonaws.com/style.css">
+  <link rel="stylesheet" type="text/css" href="https://fec-soundcloud-user-module.s3-us-west-1.amazonaws.com/style.css">
+  <link rel="stylesheet" type="text/css" href="https://fec-soundcloud-comments.s3-us-west-2.amazonaws.com/style.css">
+  <link rel="stylesheet" href="https://use.typekit.net/gzx2xkw.css">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css" integrity="sha384-ekOryaXPbeCpWQNxMwSWVvQ0+1VrStoPJq54shlYhR8HzQgig1v5fas6YgOqLoKz" crossorigin="anonymous">
+<style>
+  html {
+    font-family: interstate, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  body {
+    background: #f2f2f2;
+    height: 2000px;
+  }
+  .float-l {
+    float: left;
+  }
+  .header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    font: 100 14px/1.5 Interstate,Lucida Grande,Arial,sans-serif;
+    -webkit-transform: translateZ(0);
+    -webkit-font-smoothing: subpixel-antialiased;
+    background: #333;
+    height: 46px;
+    color: #ccc;
+    transition: height .2s ease-in-out;
+  }
+  .header__container {
+    width: 1240px;
+    margin: 0 auto;
+    display: block;
+    display: flex;
+  }
+  .header .header__logo {
+    background: #f50;
+    background: linear-gradient(#f70,#f30);
+    width: 184px;
+    height: 46px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+  }
+  .header__navMenu > li {
+    float: left;
+    position: relative;
+  }
+  .header__navMenu>li>a {
+    display: block;
+    padding: 12px 0;
+    width: 104px;
+    height: 46px;
+    border-right: 1px solid #111;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  .headerSearch {
+    padding: 9px 10px 8px;
+    position: relative;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: flex;
+    flex: 1;
+  }
+  .header__search input {
+    font-size: 14px;
+    border: 0;
+    padding: 5px 7px;
+    background: #e5e5e5;
+    height: 28px;
+    border-radius: 4px;
+    width: 400px;
+  }
+  .header__search input::placeholder {
+    color:#999;
+  }
+  .headerSearch__submit {
+    border: 0;
+    padding: 0;
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpza2V0Y2g9Imh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaC9ucyIgd2lkdGg9IjE1cHgiIGhlaWdodD0iMTVweCIgdmlld0JveD0iMCAwIDE1IDE1IiB2ZXJzaW9uPSIxLjEiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCAzLjIuMiAoOTk4MykgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+U2VhcmNoPC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnMvPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9IlRvcC1CYXIiIHNrZXRjaDp0eXBlPSJNU0FydGJvYXJkR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMDM2LjAwMDAwMCwgLTcwMS4wMDAwMDApIiBmaWxsPSIjNjY2NjY2Ij4KICAgICAgICAgICAgPHBhdGggZD0iTTIwNDUuNDgzMjUsNzExLjg4NTk2MSBMMjA0OC45MTI0OSw3MTUuMzE1MjA3IEMyMDQ5LjI5ODc2LDcxNS43MDE0NzYgMjA0OS45MjMyLDcxNS43MDMzMDIgMjA1MC4zMTMyNSw3MTUuMzEzMjUyIEMyMDUwLjcwMDYsNzE0LjkyNTkwMyAyMDUwLjY5NjgxLDcxNC4yOTQwOTYgMjA1MC4zMTUyMSw3MTMuOTEyNDkxIEwyMDQ2Ljg4NTk2LDcxMC40ODMyNDYgQzIwNDcuNTg3MzMsNzA5LjUwMTE5MiAyMDQ4LDcwOC4yOTg3ODggMjA0OCw3MDcgQzIwNDgsNzAzLjY4NjI5MiAyMDQ1LjMxMzcxLDcwMSAyMDQyLDcwMSBDMjAzOC42ODYyOSw3MDEgMjAzNiw3MDMuNjg2MjkyIDIwMzYsNzA3IEMyMDM2LDcxMC4zMTM3MDggMjAzOC42ODYyOSw3MTMgMjA0Miw3MTMgQzIwNDMuMjk4NzksNzEzIDIwNDQuNTAxMTksNzEyLjU4NzMzMiAyMDQ1LjQ4MzI1LDcxMS44ODU5NjEgTDIwNDUuNDgzMjUsNzExLjg4NTk2MSBaIE0yMDM4LDcwNyBDMjAzOCw3MDQuNzkwODYxIDIwMzkuNzkwODYsNzAzIDIwNDIsNzAzIEMyMDQ0LjIwOTE0LDcwMyAyMDQ2LDcwNC43OTA4NjEgMjA0Niw3MDcgQzIwNDYsNzA5LjIwOTEzOSAyMDQ0LjIwOTE0LDcxMSAyMDQyLDcxMSBDMjAzOS43OTA4Niw3MTEgMjAzOCw3MDkuMjA5MTM5IDIwMzgsNzA3IFoiIGlkPSJTZWFyY2giIHNrZXRjaDp0eXBlPSJNU1NoYXBlR3JvdXAiLz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==") 0 0 no-repeat;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+  }
+  .header__loginMenu {
+    padding: 9px 10px 10px;
+  }
+  button {
+    display: inline-block;
+    position: relative;
+    height: 26px;
+    margin: 0;
+    padding: 2px 11px 2px 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    background-color: #fff;
+    cursor: pointer;
+    color: #333;
+    font-size: 14px;
+    line-height: 20px;
+    white-space: nowrap;
+    font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;
+    font-weight: 100;
+    text-align: center;
+    color: #fff;
+  }
+  button.signin {
+    border-color: #666;
+    background-color: transparent;
+    margin-right: 10px;
+  }
+  button.signup {
+    background-color: #f50;
+    border-color: #f50;
+  }
+  .header__upload {
+    padding: 12px 10px;
+  }
+  .header__menuDots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 46px;
+    padding: 0 10px;
+  }
+  section.main {
+    background: #fff;
+    width: 1240px;
+    margin: 0 auto;
+    height: 2000px;
+  }
+  .banner {
+    height: 380px;
+    background: #806560; /* Old browsers */
+    background: -moz-linear-gradient(left,  #806560 0%, #4b4f50 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left,  #806560 0%,#4b4f50 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right,  #806560 0%,#4b4f50 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  }
+  .content-wrapper {
+    padding: 20px 30px;
+    display: grid;
+    grid-template-areas: "content side";
+    grid-gap: 0px;
+    grid-template-columns: 850px 390px;
+    grid-template-rows: 190px;
+  }
+  main {
+    padding-right: 30px;
+    border-right: 1px solid #f2f2f2;
+    grid-area: content;
+    display: grid;
+    grid-template-areas:
+    "comment comment comment"
+    "user comments comments";
+    grid-gap: 0px;
+    grid-template-columns: 150px 669px;
+    grid-template-rows:
+    89px
+    800px;
+  }
+  aside {
+    grid-area: side;
+  }
+  .commentBox {
+    grid-area: comment;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    /* grid-row-start: 1;
+    grid-row-end: 1; */
+  }
+  .userBox {
+    grid-area: user;
+  }
+  .commentsBox {
+    grid-area: comments;
+  }
+</style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__container">
+      <div class="header__logo float-l">
+        <svg xmlns="http://www.w3.org/2000/svg" width="58" height="20" viewBox="5.12 25.095 52.916 22.972"><linearGradient id="a" gradientUnits="userSpaceOnUse" x1="1172.791" y1="-1533.878" x2="1172.791" y2="-1639.876" gradientTransform="matrix(.2065 0 0 -.2065 -210.547 -291.026)"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff"/></linearGradient><path fill="url(#a)" d="M15.835 47.9c-.083-.082-.145-.268-.145-.393 0-.145-.083-1.403-.186-2.807l-.186-2.561.207-4.521c.206-4.604.227-4.769.578-4.769.062 0 .186.041.269.124.124.103.186.681.392 4.562l.248 4.459-.248 2.911c-.145 1.61-.289 2.973-.351 3.034-.145.166-.393.145-.578-.02V47.9zm2.105-.061c-.103-.145-.186-1.012-.33-3.097-.165-2.478-.186-3.18-.103-5.037.041-1.178.124-3.51.186-5.183.062-1.672.124-3.138.145-3.303.083-.537.702-.619.826-.103.021.103.145 2.601.269 5.532l.227 5.348-.227 2.767a293.778 293.778 0 0 0-.227 2.87c0 .164-.269.392-.454.392-.104 0-.227-.083-.31-.206v.02zm2.148.041c-.145-.145-.186-.372-.227-1.445-.042-.702-.104-1.755-.145-2.333-.124-1.465-.104-3.365.041-7.887.083-2.146.145-4.314.145-4.851.021-1.094.104-1.424.393-1.507.351-.083.619.165.619.599 0 .207.103 2.89.207 5.946l.207 5.554-.207 2.787c-.104 1.527-.207 2.828-.207 2.891 0 .164-.269.392-.475.392-.103 0-.248-.083-.351-.165v.019zm2.147 0c-.103-.124-.165-.372-.207-.764-.31-4.707-.31-5.038-.165-9.951.186-6.771.227-7.412.392-7.577s.62-.165.764 0c.083.083.145 1.28.248 3.964.248 7.494.269 8.691.103 11.148-.186 2.787-.206 3.034-.392 3.199-.186.186-.516.166-.723-.041l-.02.022zm2.147-.021c-.103-.104-.186-.33-.186-.475s-.062-1.383-.145-2.746c-.145-2.291-.145-2.932 0-8.485.165-6.441.165-6.338.64-6.441.413-.083.682.268.682.908 0 .289.041 1.796.083 3.324.041 1.528.103 3.86.145 5.183.021 1.301.062 2.436.083 2.498.021.062-.042 1.362-.145 2.89a185.27 185.27 0 0 0-.186 2.974c0 .247-.33.578-.619.578a.569.569 0 0 1-.392-.207h.04zm2.209.021c-.186-.186-.207-.413-.392-3.716-.103-1.92-.083-3.943.103-10.488.104-3.509.104-3.571.661-3.571.186 0 .372.062.475.186.186.186.186.33.268 3.344.021.949.104 3.262.145 5.12.083 3.034.083 3.675-.083 6.173-.165 2.684-.186 2.787-.392 2.952-.269.206-.599.206-.826 0h.041zm2.188 0c-.124-.124-.186-.351-.227-.764-.145-1.59-.248-5.533-.207-7.866.021-1.445.083-3.654.104-4.955.103-5.223.145-6.048.33-6.234.227-.227.681-.227.888 0 .227.227.248.888.454 10.963.062 3.035-.145 8.361-.351 8.732-.186.352-.723.413-1.012.124h.021zm2.251-.021a.77.77 0 0 1-.289-.475c-.021-.166-.104-1.508-.186-2.994-.103-2.126-.124-3.406-.062-6.008.042-1.816.104-4.83.145-6.688.062-4.253.104-4.666.351-4.914.269-.248.661-.227.95.041.207.207.227.289.248 1.342 0 .619.021 1.238.041 1.362s.042 1.879.083 3.901c.042 2.023.083 3.696.104 3.717.103.165.021 6.152-.104 8.01a104.788 104.788 0 0 0-.145 2.271c0 .227-.413.619-.681.619-.125.002-.332-.08-.455-.184zm2.002-.041l-.228-.228V26.244l.248-.186c.289-.227 1.383-.578 2.478-.805 1.177-.227 3.097-.207 4.315.041 4.871 1.012 8.34 4.749 9.125 9.827l.062.33.806-.227c.681-.186.929-.227 1.816-.186 1.26.062 1.321.062 2.146.371 3.635 1.383 5.285 5.574 3.531 9.043-.806 1.61-1.962 2.621-3.717 3.262l-.66.248-9.827.021-9.827.021-.268-.186zm-19.365-.083c-.041-.103-.165-1.466-.289-3.015-.207-2.725-.207-2.849-.062-4.582.083-.971.166-2.168.207-2.643.062-.867.207-1.281.434-1.281.289 0 .372.331.62 2.953l.248 2.684-.248 2.85c-.124 1.568-.269 2.932-.31 3.055-.041.145-.145.207-.31.207s-.248-.062-.31-.207l.02-.021zm-2.064.042c-.021-.042-.165-1.363-.289-2.932l-.248-2.85.248-2.952c.124-1.631.289-3.015.331-3.076.124-.145.31-.145.434 0 .062.062.227 1.425.372 3.056l.268 2.932-.268 2.849c-.145 1.569-.289 2.891-.31 2.952-.041.124-.475.166-.537.041v-.02zm-2.044-.227c-.041-.062-.186-1.321-.31-2.808l-.248-2.705.227-2.56c.124-1.403.248-2.746.268-2.952.062-.413.248-.578.434-.393.062.062.227 1.28.393 2.911l.289 2.808-.269 2.705c-.145 1.486-.31 2.787-.351 2.91-.103.228-.31.269-.434.104v-.02zm-2.085-.867c-.021-.083-.165-1.218-.289-2.498l-.248-2.333.268-2.374c.248-2.271.289-2.374.475-2.415.227-.042.206-.145.578 2.725l.268 2.146-.268 2.251c-.145 1.239-.31 2.333-.351 2.456-.104.248-.331.27-.393.042h-.04zm-1.92-1.735a27.33 27.33 0 0 1-.248-1.548l-.186-1.404.207-1.486c.103-.826.248-1.549.289-1.61.206-.248.351.145.557 1.61l.227 1.486-.227 1.486c-.124.826-.289 1.527-.351 1.569-.165.103-.227.083-.289-.083l.021-.02z"/></svg>
+        Soundcloud
+      </div>
+      <nav class="header__navWrapper">
+        <ul class="header__navMenu">
+          <li>
+            <a class="header__navMenuItem">Home</a>
+          </li>
+          <li>
+            <a class="header__navMenuItem">Stream</a>
+          </li>
+          <li>
+            <a class="header__navMenuItem">Library</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="header__search">
+        <form class="headerSearch">
+            <input class="headerSearch__input sc-input g-all-transitions-300" placeholder="Search for artists, bands, tracks, podcasts" type="search" name="q" autocomplete="off" aria-label="Search" aria-autocomplete="list" aria-owns="searchMenuList">
+            <button class="headerSearch__submit"></button>
+        </form>
+      </div>
+      <div class="header__right">
+        <div class="header__loginMenu float-l">
+          <button class="signin">Sign in</button>
+          <button class="signup">Create account</button>
+        </div>
+        <div class="header__upload float-l">
+          Upload
+        </div>
+        <div class="header__menuDots float-l">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" width="22px" height="6px" viewBox="0 0 22 6" version="1.1"><title>More</title><desc>Created with Sketch.</desc><defs/><g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"><g id="Top-Bar" sketch:type="MSArtboardGroup" transform="translate(-1058.000000, -1620.000000)" fill="#CCC"><g id="More" sketch:type="MSLayerGroup" transform="translate(1058.000000, 1620.000000)"><ellipse id="Oval-7" sketch:type="MSShapeGroup" cx="3" cy="3" rx="3" ry="3"/><ellipse id="Oval-8" sketch:type="MSShapeGroup" cx="11" cy="3" rx="3" ry="3"/><ellipse id="Oval-9" sketch:type="MSShapeGroup" cx="19" cy="3" rx="3" ry="3"/></g></g></g></svg>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section class="main">
+    <div class="banner">
+      <div id="primary-player"></div>
+    </div>
+    <section class="content-wrapper">
+      <main>
+        <div class="commentBox">
+          <img style="max-width:100%" src="https://rpt-soundcloud.s3-us-west-2.amazonaws.com/ui/comment-input.png" alt="comment input">
+        </div>
+        <div class="userBox">
+          <div id="user"></div>
+        </div>
+        <div class="commentsBox">
+          <div id="comments"></div>
+        </div>
+      </main>
+      <aside>
+        <img src="https://rpt-soundcloud.s3-us-west-2.amazonaws.com/ui/related-tracks.png" alt="Related Tracks">
+      </aside>
+    </section>
+  </section>
+
+
+
+  <script src="https://rpt-soundcloud.s3-us-west-2.amazonaws.com/bundle.js"></script>
+  <script src="https://fec-soundcloud-user-module.s3-us-west-1.amazonaws.com/bundle.js"></script>
+  <script src="https://fec-soundcloud-comments.s3-us-west-2.amazonaws.com/index_bundle.js"></script>
+</body>
+</html>
+<!-- <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -24,4 +290,4 @@
     <script src="https://fec-soundcloud-comments.s3-us-west-2.amazonaws.com/index_bundle.js"></script>
 
   </body>
-</html>
+</html> -->
