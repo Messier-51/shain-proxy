@@ -19,7 +19,6 @@
   }
   body {
     background: #f2f2f2;
-    height: 2000px;
   }
   .float-l {
     float: left;
@@ -35,6 +34,7 @@
     height: 46px;
     color: #ccc;
     transition: height .2s ease-in-out;
+    z-index: 999;
   }
   .header__container {
     width: 1240px;
@@ -145,7 +145,6 @@
     background: #fff;
     width: 1240px;
     margin: 0 auto;
-    height: 2000px;
   }
   .banner {
     height: 380px;
@@ -159,8 +158,8 @@
     display: grid;
     grid-template-areas: "content side";
     grid-gap: 0px;
-    grid-template-columns: 850px 390px;
-    grid-template-rows: 190px;
+    grid-template-columns: 850px 330px;
+    grid-template-rows: 100%;
   }
   main {
     padding-right: 30px;
@@ -174,7 +173,7 @@
     grid-template-columns: 150px 669px;
     grid-template-rows:
     89px
-    800px;
+    auto;
   }
   aside {
     grid-area: side;
@@ -191,6 +190,26 @@
   }
   .commentsBox {
     grid-area: comments;
+  }
+  .paging-eof:before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 14px;
+    position: absolute;
+    left: 0;
+    top: -9px;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAOCAAAAAB4YAGaAAAAtElEQVR4AY3RT+uCMADG8d7/O3gKifLQQTpoHbp0+RlFET+LKDP6R5Ag08ogvKhrRIlbq/w+bKfPaSvRgklg4rQURV+mP6GGR3r0HZoUeMr0M0zaMSK8WkthnBj0dC2HOGSwaVrRGySdEOeqix1myKWGIlyoHmxM2QbI1xXhCFsM0WPnj4MNEU5wxD/GsNDnoCFCp0Zgs60w5+BehDfnAhceAvj1TFW0jewdfRpQwu7Cfy3vDqsH6oJzha+DAAAAAElFTkSuQmCC") 50% no-repeat;
+  }
+  .paging-eof {
+    clear: both;
+    position: relative;
+    top: -1px;
+    height: 14px;
+    margin: 45px 0 0;
+  }
+  .sc-border-light-top {
+    border-top: 1px solid #f2f2f2;
   }
 </style>
 </head>
@@ -249,6 +268,7 @@
         </div>
         <div class="commentsBox">
           <div id="comments"></div>
+          <div class="paging-eof sc-border-light-top"></div>
         </div>
       </main>
       <aside>
@@ -259,35 +279,8 @@
 
 
 
-  <script src="https://rpt-soundcloud.s3-us-west-2.amazonaws.com/bundle.js"></script>
-  <script src="https://fec-soundcloud-user-module.s3-us-west-1.amazonaws.com/bundle.js"></script>
-  <script src="https://fec-soundcloud-comments.s3-us-west-2.amazonaws.com/index_bundle.js"></script>
+  <script data-module="primary-player"  src="https://d1vgv8e3fkby3.cloudfront.net/bundle.js"></script>
+  <script data-module="user"  src="http://d2tlnaqrf4t9d7.cloudfront.net/bundle.js"></script>
+  <script data-module="comments" src="http://d1pzidawlf0u5w.cloudfront.net/index_bundle.js"></script>
 </body>
 </html>
-<!-- <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-
-    <link rel="stylesheet" type="text/css" href="https://fec-soundcloud-user-module.s3-us-west-1.amazonaws.com/style.css">
-
-    <link rel="stylesheet" href="https://rpt-soundcloud.s3-us-west-2.amazonaws.com/style.css">
-
-    <link rel="stylesheet" href="https://fec-soundcloud-comments.s3-us-west-2.amazonaws.com/style.css">
-
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css" integrity="sha384-ekOryaXPbeCpWQNxMwSWVvQ0+1VrStoPJq54shlYhR8HzQgig1v5fas6YgOqLoKz" crossorigin="anonymous">
-
-  </head>
-  <body>
-    <div id="primary-player"></div>
-    <div id="user"></div>
-    <div id="comments"></div>
-
-    <script src="https://fec-soundcloud-user-module.s3-us-west-1.amazonaws.com/bundle.js"></script>
-
-    <script src="https://rpt-soundcloud.s3-us-west-2.amazonaws.com/bundle.js"></script>
-
-    <script src="https://fec-soundcloud-comments.s3-us-west-2.amazonaws.com/index_bundle.js"></script>
-
-  </body>
-</html> -->
