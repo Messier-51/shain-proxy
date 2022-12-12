@@ -19,7 +19,7 @@
   "homepage": "https://github.com/Shain-Carrasco/shain-proxy#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "http-proxy-middleware": "^0.20.0",
     "nodemon": "^2.0.2",
     "react": "^16.12.0",
